@@ -38,6 +38,14 @@ Swagger:
 
 ```text
 http://127.0.0.1:5001/apidocs
+
+http://127.0.0.1:5001/turbines
+
+http://127.0.0.1:5001/sensors
+
+http://127.0.0.1:5001/sensor-data
+
+http://127.0.0.1:5001/incidents
 ```
 
 ## Docker
