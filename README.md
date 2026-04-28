@@ -13,6 +13,15 @@ Simple Flask REST API for the Intelligent IoT Solutions case.
 
 ## Local run
 
+Create a local `.env` file based on `.env.example` and set your database values, for example:
+
+```env
+DB_HOST=127.0.0.1
+DB_NAME=iot_case_db
+DB_USER=root
+DB_PASSWORD=your_password_here
+```
+
 Install dependencies:
 
 ```powershell

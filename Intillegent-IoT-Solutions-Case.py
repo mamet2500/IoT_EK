@@ -66,10 +66,10 @@ def get_turbines():
             example: 1
           name:
             type: string
-            example: Main Vibration Sensor
+            example: Main Temperature Sensor
           type:
             type: string
-            example: vibration
+            example: temperature
           status:
             type: string
             example: active
@@ -200,6 +200,9 @@ def create_turbine():
         payload.get("location"),
         payload.get("status", "active")
     )
+    if turbine_id is None:
+        return error_response("Failed to create turbine", 500)
+
     return jsonify(repo.get_turbine_by_id(turbine_id)), 201
 
 
@@ -283,8 +286,8 @@ def create_sensor():
             turbine_id:
               type: integer
           example:
-            name: Main Vibration Sensor
-            type: vibration
+            name: Main Temperature Sensor
+            type: temperature
             status: active
             location: Gearbox housing
             threshold_value: 80
@@ -323,6 +326,9 @@ def create_sensor():
         payload.get("unit", "mm/s"),
         turbine_id
     )
+    if sensor_id is None:
+        return error_response("Failed to create sensor", 500)
+
     return jsonify(repo.get_sensor_by_id(sensor_id)), 201
 
 
@@ -411,7 +417,12 @@ def create_sensor_data():
         return error_response("Field 'value' must be numeric", 400)
 
     reading_id = repo.create_sensor_reading(sensor["id"], reading_value)
+    if reading_id is None:
+        return error_response("Failed to store sensor reading", 500)
+
     reading = repo.get_sensor_reading_by_id(reading_id)
+    if reading is None:
+        return error_response("Failed to load stored sensor reading", 500)
 
     incident = None
     incident_created = False
@@ -430,7 +441,13 @@ def create_sensor_data():
             severity="high",
             status="open"
         )
+        if incident_id is None:
+            return error_response("Failed to create incident", 500)
+
         incident = repo.get_incident_by_id(incident_id)
+        if incident is None:
+            return error_response("Failed to load created incident", 500)
+
         incident_created = True
 
     return jsonify(
