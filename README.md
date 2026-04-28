@@ -38,3 +38,13 @@ Build and run:
 ```powershell
 docker compose up --build
 ```
+
+## GitHub Actions
+
+The repository includes a simple CI workflow in `.github/workflows/ci.yml`.
+
+It runs automatically on push and pull request to `main` and does three things:
+
+- installs Python dependencies
+- checks that the main Python files compile without syntax errors
+- builds the Docker image
